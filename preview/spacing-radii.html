@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { background: #E5E5E5; padding: 28px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .box { width: 70px; height: 70px; background: var(--black); border: 2px solid var(--yellow); }
+  .tok { font-family: var(--font-mono); font-size: 10px; color: var(--grey-dark); }
+  .nm  { font-family: var(--font-display); font-weight: 900; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--black); }
+  .note { margin-top: 14px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-dark); text-align: center; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="item"><div class="box" style="border-radius:0"></div><div class="nm">None · 0</div><div class="tok">default</div></div>
+    <div class="item"><div class="box" style="border-radius:2px"></div><div class="nm">SM · 2</div><div class="tok">swatches</div></div>
+    <div class="item"><div class="box" style="border-radius:4px"></div><div class="nm">MD · 4</div><div class="tok">rare</div></div>
+    <div class="item"><div class="box" style="border-radius:999px"></div><div class="nm">Pill</div><div class="tok">badges only</div></div>
+  </div>
+  <div class="note">Brand is square-cornered by default.</div>
+</body></html>

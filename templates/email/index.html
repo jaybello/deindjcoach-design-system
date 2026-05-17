@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Dein DJ Coach — Email Template</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <style>
+    body {
+      margin: 0;
+      background: #2a2a2a;
+      padding: 48px 24px;
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+    /* Email client chrome */
+    .client {
+      max-width: 700px;
+      margin: 0 auto 64px;
+      background: var(--white);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    }
+    .client__chrome {
+      padding: 18px 24px;
+      border-bottom: 1px solid #eee;
+      background: #f5f5f5;
+      display: flex; flex-direction: column; gap: 6px;
+      font-family: var(--font-body); font-size: 13px;
+      color: #333;
+    }
+    .client__chrome .from { font-weight: 700; }
+    .client__chrome .from span.email { color: #666; font-weight: 400; margin-left: 6px; }
+    .client__chrome .subject { font-weight: 700; font-size: 16px; color: var(--black); }
+    .client__chrome .meta { color: #888; font-size: 12px; }
+    .label { font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--grey-mid); margin: 0 0 32px; padding: 0 24px; }
+
+    /* === Email body === */
+    .email {
+      font-family: var(--font-body); font-weight: 400; color: var(--black);
+      line-height: 1.55;
+    }
+    .email__hero {
+      background: var(--black); color: var(--white);
+      padding: 56px 48px;
+      position: relative; overflow: hidden;
+    }
+    .email__hero::before {
+      content: ''; position: absolute;
+      top: -120px; right: -120px;
+      width: 320px; height: 320px; border-radius: 50%;
+      background: var(--yellow); opacity: 0.1;
+    }
+    .email__hero img.logo { height: 28px; margin-bottom: 40px; display: block; position: relative; }
+    .email__hero .eyebrow {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--yellow); margin-bottom: 16px; position: relative;
+    }
+    .email__hero h1 {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9;
+      font-size: 56px; color: var(--white); margin: 0; position: relative;
+    }
+    .email__hero h1 .y { color: var(--yellow); }
+
+    .email__body { padding: 44px 48px; }
+    .email__greeting { font-size: 16px; font-weight: 700; margin: 0 0 24px; }
+    .email__body p { margin: 0 0 18px; font-size: 16px; line-height: 1.6; color: var(--grey-dark); }
+    .email__body p .lead { font-weight: 500; }
+
+    .email__cta { padding: 8px 48px 36px; }
+    .btn-email {
+      display: inline-block;
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 16px 32px;
+      background: var(--yellow); color: var(--black);
+      text-decoration: none;
+    }
+
+    /* Module card inside email */
+    .email__card {
+      margin: 8px 48px 0; padding: 28px 32px;
+      background: var(--grey-light); color: var(--black);
+      display: grid; grid-template-columns: 64px 1fr auto; gap: 18px; align-items: center;
+    }
+    .email__card .num {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 36px; color: var(--yellow); line-height: 1;
+      -webkit-text-stroke: 1.5px var(--black);
+    }
+    .email__card .info .t {
+      font-family: var(--font-display); font-weight: 900; text-transform: uppercase;
+      font-size: 20px; letter-spacing: -0.005em; line-height: 1; color: var(--black);
+    }
+    .email__card .info .d {
+      font-family: var(--font-body); font-size: 13px; color: var(--grey-dark);
+      margin-top: 6px;
+    }
+    .email__card .dur {
+      font-family: var(--font-mono); font-size: 12px; color: var(--grey-dark);
+      letter-spacing: 0.1em;
+    }
+
+    /* Tip block */
+    .email__tip {
+      margin: 28px 48px 0;
+      padding: 28px 32px;
+      background: var(--black); color: var(--white);
+      position: relative;
+    }
+    .email__tip::before { content:''; position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--yellow); }
+    .email__tip .t-label {
+      font-family: var(--font-body); font-weight: 700; font-size: 10px;
+      letter-spacing: 0.32em; text-transform: uppercase; color: var(--yellow);
+    }
+    .email__tip .t-h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; font-size: 28px; letter-spacing: -0.01em;
+      line-height: 1; margin: 10px 0 12px;
+    }
+    .email__tip .t-b {
+      font-size: 14px; line-height: 1.55; color: var(--grey-mid);
+    }
+
+    .email__sig {
+      padding: 32px 48px 12px;
+      font-size: 14px; color: var(--grey-dark);
+    }
+    .email__sig p { margin: 0 0 6px; }
+    .email__sig .name { font-weight: 700; color: var(--black); }
+
+    .email__foot {
+      background: var(--black); color: var(--grey-mid);
+      padding: 28px 48px;
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .email__foot .row { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+    .email__foot img { height: 22px; }
+    .email__foot a { color: var(--grey-mid); text-decoration: none; }
+    .email__foot a:hover { color: var(--yellow); }
+    .email__foot .links { display: flex; gap: 18px; }
+    .email__foot .legal { font-size: 10px; opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+  <!-- === EMAIL 01 — Welcome / Course start === -->
+  <div>
+    <div class="label" style="color:#bbb;">01 · Welcome — Kursstart</div>
+    <div class="client">
+      <div class="client__chrome">
+        <div class="from">Jay · Dein DJ Coach <span class="email">&lt;hey@deindjcoach.de&gt;</span></div>
+        <div class="subject">Drauf — dein Kurs ist startklar.</div>
+        <div class="meta">An: lukas@example.de · Heute, 09:14</div>
+      </div>
+      <div class="email">
+        <div class="email__hero">
+          <img class="logo" src="../../assets/logos/dein-dj-coach-wht.png" alt="Dein DJ Coach">
+          <div class="eyebrow">Willkommen</div>
+          <h1>Leg los,<br><span class="y">Lukas.</span></h1>
+        </div>
+        <div class="email__body">
+          <p class="email__greeting">Moin Lukas,</p>
+          <p>schön dass du dabei bist. Dein Online-Kurs <em>Von 0 auf CDJs</em> ist freigeschaltet — du kannst direkt anfangen.</p>
+          <p>Ein Tipp vorab: schau Modul 01 und 02 hintereinander, mach danach eine Pause und versuch das Setup an deinem eigenen Equipment nachzubauen. Theorie ohne Hände am Pult bringt nichts.</p>
+        </div>
+        <div class="email__cta">
+          <a href="#" class="btn-email">Zum Kurs</a>
+        </div>
+
+        <div class="email__card">
+          <div class="num">01</div>
+          <div class="info">
+            <div class="t">Equipment & Signalfluss</div>
+            <div class="d">Was zur Hölle passiert eigentlich zwischen Deck und Box.</div>
+          </div>
+          <div class="dur">30 MIN</div>
+        </div>
+        <div class="email__card" style="margin-top: 2px;">
+          <div class="num">02</div>
+          <div class="info">
+            <div class="t">Beatmatching by ear</div>
+            <div class="d">Ohne Sync-Button. Versprochen, geht.</div>
+          </div>
+          <div class="dur">42 MIN</div>
+        </div>
+
+        <div class="email__tip">
+          <div class="t-label">Tipp #07</div>
+          <div class="t-h">Phrase, nicht Beat.</div>
+          <div class="t-b">Mixe auf der musikalischen Phrase — die Stelle, an der sich der Track "öffnet". Nicht auf einen zufälligen Beat. Daran wirst du in jedem Modul wieder denken.</div>
+        </div>
+
+        <div class="email__sig">
+          <p>Bei Fragen einfach auf diese Mail antworten — geht direkt an mich.</p>
+          <p style="margin-top:14px;">Beste Grüße,</p>
+          <p class="name">Jay</p>
+          <p style="color: var(--grey-mid); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;">Coach · Hamburg</p>
+        </div>
+
+        <div class="email__foot">
+          <div class="row">
+            <img src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+            <div class="links">
+              <a>YouTube</a>
+              <a>Instagram</a>
+              <a>Newsletter</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="legal">© 2026 Dein DJ Coach · Hamburg</div>
+            <div class="legal"><a>Abmelden</a> · <a>Impressum</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- === EMAIL 02 — Newsletter tip === -->
+  <div>
+    <div class="label" style="color:#bbb;">02 · Newsletter — wöchentlicher Tipp</div>
+    <div class="client">
+      <div class="client__chrome">
+        <div class="from">Jay · Dein DJ Coach <span class="email">&lt;hey@deindjcoach.de&gt;</span></div>
+        <div class="subject">Tipp #19 — Timing ist alles.</div>
+        <div class="meta">An: lukas@example.de · Sonntag, 18:00</div>
+      </div>
+      <div class="email">
+        <div style="background: var(--yellow); color: var(--black); padding: 56px 48px; position: relative;">
+          <div style="font-family: var(--font-body); font-weight: 700; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(0,0,0,0.55); margin-bottom: 16px;">Tipp #19 · Newsletter</div>
+          <h1 style="font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9; font-size: 72px; color: var(--black); margin: 0;">Timing<br>ist alles.</h1>
+        </div>
+        <div class="email__body">
+          <p class="email__greeting">Moin,</p>
+          <p>schneller Tipp diese Woche. Wenn deine Übergänge sich "matschig" anfühlen, ist es fast nie das Equipment. Es ist das Timing.</p>
+          <p>Probier das: zähl beim nächsten Mix laut die Phrasen (1-2-3-4 · 1-2-3-4) durch zwei komplette 32-Bar-Zyklen, bevor du den Fader anfasst. Dein Ohr lernt das Pattern — und dein nächster Mix klingt sofort 30% besser.</p>
+          <p>Mehr dazu im Modul "Phrasing & Song-Struktur" im Kurs.</p>
+        </div>
+        <div class="email__cta">
+          <a href="#" class="btn-email">Modul ansehen</a>
+        </div>
+        <div class="email__sig">
+          <p style="margin-top:0;">Bis Sonntag,</p>
+          <p class="name">Jay</p>
+        </div>
+        <div class="email__foot">
+          <div class="row">
+            <img src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+            <div class="links">
+              <a>YouTube</a>
+              <a>Instagram</a>
+              <a>Newsletter</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="legal">© 2026 Dein DJ Coach · Hamburg</div>
+            <div class="legal"><a>Abmelden</a> · <a>Impressum</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

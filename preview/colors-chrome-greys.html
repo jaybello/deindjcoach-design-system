@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { background: var(--grey-light); padding: 24px; }
+  .row { display: flex; gap: 12px; align-items: center; padding: 10px 0; }
+  .chip { width: 36px; height: 36px; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08); }
+  .name { font-family: var(--font-display); font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--black); width: 130px; }
+  .hex { font-family: var(--font-mono); font-size: 11px; color: var(--grey-mid); width: 90px; }
+  .use { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-dark); }
+  .row + .row { border-top: 1px solid rgba(0,0,0,0.06); }
+</style></head>
+<body>
+  <div class="row"><div class="chip" style="background:#999999"></div><div class="name">Grey Mid</div><div class="hex">#999999</div><div class="use">Meta · Labels · Captions</div></div>
+  <div class="row"><div class="chip" style="background:#333333"></div><div class="name">Grey Dark</div><div class="hex">#333333</div><div class="use">Dark body on light</div></div>
+  <div class="row"><div class="chip" style="background:rgba(255,255,255,0.08);background-color:#222"></div><div class="name">Border (dark)</div><div class="hex">rgba(255,255,255,.08)</div><div class="use">Hairlines on black</div></div>
+  <div class="row"><div class="chip" style="background:#f0f0f0;border:1px solid rgba(0,0,0,0.08)"></div><div class="name">Border (light)</div><div class="hex">rgba(0,0,0,.08)</div><div class="use">Hairlines on white</div></div>
+</body></html>

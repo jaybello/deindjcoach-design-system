@@ -1,0 +1,204 @@
+/* ============================================================
+   DEIN DJ COACH — Colors, Type, Spacing
+   Single source of truth for design tokens.
+   ============================================================ */
+
+/* --- Webfonts ---
+ * Three families ship with this brand:
+ *   - Klein           — display weights, for headlines and posters
+ *   - KleinText       — body-optimized cuts, for paragraph and UI copy
+ *   - KleinCondensed  — narrow display, for stacked vertical headlines
+ * Use Klein for hero, KleinText for body. Italics live where natural.
+ */
+
+/* ---- Klein (display) ---- */
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Thin.ttf') format('truetype');           font-weight: 100; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-ThinItalic.ttf') format('truetype');     font-weight: 100; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-ExtraLight.ttf') format('truetype');     font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-ExtraLightItalic.ttf') format('truetype'); font-weight: 200; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-LightItalic.ttf') format('truetype');    font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Book.ttf') format('truetype');           font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-BookItalic.ttf') format('truetype');     font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Italic.ttf') format('truetype');         font-weight: 450; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Medium.ttf') format('truetype');         font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-MediumItalic.ttf') format('truetype');   font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Bold.ttf') format('truetype');           font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Klein'; src: url('fonts/Klein-Black.ttf') format('truetype');          font-weight: 900; font-style: normal; font-display: swap; }
+
+/* ---- KleinText (body) ---- */
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Light.ttf') format('truetype');        font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Book.ttf') format('truetype');         font-weight: 350; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-BookItalic.ttf') format('truetype');   font-weight: 350; font-style: italic; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Regular.ttf') format('truetype');      font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Medium.ttf') format('truetype');       font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-MediumItalic.ttf') format('truetype'); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Bold.ttf') format('truetype');         font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-BoldItalic.ttf') format('truetype');   font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-Black.ttf') format('truetype');        font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinText'; src: url('fonts/KleinText-BlackItalic.ttf') format('truetype');  font-weight: 900; font-style: italic; font-display: swap; }
+
+/* ---- KleinCondensed (narrow display) ---- */
+@font-face { font-family: 'KleinCondensed'; src: url('fonts/KleinCondensed-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinCondensed'; src: url('fonts/KleinCondensed-Bold.ttf') format('truetype');    font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'KleinCondensed'; src: url('fonts/KleinCondensed-Black.ttf') format('truetype');   font-weight: 900; font-style: normal; font-display: swap; }
+
+/* ============================================================
+   BASE TOKENS
+   ============================================================ */
+:root {
+  /* --- Brand Colors (the only four, by design) --- */
+  --yellow:     #FFD600;
+  --black:      #0A0A0A;
+  --white:      #FFFFFF;
+  --grey-light: #E5E5E5;
+
+  /* --- Extended greys (guidelines only — not for marketing) --- */
+  --grey-mid:   #999999;
+  --grey-dark:  #333333;
+
+  /* --- Semantic foreground / background --- */
+  --bg:         var(--black);
+  --bg-alt:     var(--grey-light);
+  --bg-invert:  var(--white);
+  --bg-accent:  var(--yellow);
+
+  --fg1:        var(--white);      /* primary text on dark   */
+  --fg2:        var(--grey-mid);   /* secondary / meta       */
+  --fg-invert:  var(--black);      /* text on light          */
+  --fg-accent:  var(--yellow);     /* highlight / headlines  */
+
+  --border:     rgba(255, 255, 255, 0.08);
+  --border-on-light: rgba(0, 0, 0, 0.08);
+
+  /* --- Type families --- */
+  --font-display:   'Klein', 'Arial Black', Arial, sans-serif;
+  --font-condensed: 'KleinCondensed', 'Klein', 'Arial Narrow', sans-serif;
+  --font-body:      'KleinText', 'Klein', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:      ui-monospace, SFMono-Regular, 'Courier New', monospace;
+
+  /* --- Weights --- */
+  --w-book:  400;
+  --w-bold:  700;
+  --w-black: 900;
+
+  /* --- Type scale (display, headlines are uppercase) --- */
+  --fs-display: clamp(60px, 10vw, 120px);
+  --fs-h1:      clamp(40px,  7vw,  80px);
+  --fs-h2:      clamp(28px,  5vw,  48px);
+  --fs-h3:      clamp(20px,  3vw,  32px);
+  --fs-body:    16px;
+  --fs-small:   14px;
+  --fs-label:   11px;   /* tracked, all-caps eyebrows */
+
+  --tracking-display: -0.02em;   /* tight on big headlines */
+  --tracking-label:    0.32em;   /* eyebrows / overlines  */
+  --leading-display:  0.95;
+  --leading-body:     1.6;
+
+  /* --- Spacing scale --- */
+  --space-2xs:  4px;
+  --space-xs:   8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  64px;
+  --space-2xl: 96px;
+  --space-3xl: 128px;
+
+  /* --- Radii (used sparingly — brand is square-cornered) --- */
+  --radius-none: 0;
+  --radius-sm:   2px;
+  --radius-md:   4px;
+  --radius-pill: 999px;
+
+  /* --- Borders --- */
+  --border-thin: 1px;
+  --border-cta:  2px;   /* outline CTAs */
+
+  /* --- Elevation (used sparingly; brand prefers flat) --- */
+  --shadow-cta:   0 8px 24px rgba(255, 214, 0, 0.25);
+  --shadow-card:  0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow-pop:   0 24px 60px rgba(0, 0, 0, 0.45);
+
+  /* --- Motion --- */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap:   cubic-bezier(0.6, 0, 0.2, 1);
+  --dur-fast:    120ms;
+  --dur-base:    220ms;
+  --dur-slow:    360ms;
+}
+
+/* ============================================================
+   ELEMENT DEFAULTS — semantic classes
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: var(--w-book);
+  font-size: var(--fs-body);
+  line-height: var(--leading-body);
+  background: var(--bg);
+  color: var(--fg1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Headlines: always Klein, always uppercase --- */
+.h-display, .h1, .h2, .h3 {
+  font-family: var(--font-display);
+  font-weight: var(--w-black);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-display);
+  color: var(--fg-accent);
+  margin: 0;
+}
+.h-display { font-size: var(--fs-display); }
+.h1        { font-size: var(--fs-h1); }
+.h2        { font-size: var(--fs-h2); }
+.h3        { font-size: var(--fs-h3); letter-spacing: -0.01em; }
+
+/* --- Subheading: uppercase, bold weight, no tracking --- */
+.subheading {
+  font-family: var(--font-display);
+  font-weight: var(--w-bold);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+/* --- Eyebrow / label: small, tracked, all caps --- */
+.eyebrow, .label {
+  font-family: var(--font-body);
+  font-weight: var(--w-bold);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--fg2);
+}
+
+/* --- Body --- */
+.body, p {
+  font-family: var(--font-body);
+  font-weight: var(--w-book);
+  font-size: var(--fs-body);
+  line-height: var(--leading-body);
+}
+.body--lg { font-size: 18px; }
+.body--sm { font-size: var(--fs-small); }
+
+.mono, code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+/* --- Color combination utilities (the 5 approved themes) --- */
+.theme-yellow-on-black { background: var(--black);      color: var(--yellow); }
+.theme-black-on-yellow { background: var(--yellow);     color: var(--black);  }
+.theme-white-on-black  { background: var(--black);      color: var(--white);  }
+.theme-black-on-white  { background: var(--white);      color: var(--black);  }
+.theme-black-on-grey   { background: var(--grey-light); color: var(--black);  }
+
+.accent { color: var(--fg-accent); }

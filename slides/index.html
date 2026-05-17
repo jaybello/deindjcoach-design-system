@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Dein DJ Coach — Slide Template</title>
+  <link rel="stylesheet" href="../colors_and_type.css" />
+  <style>
+    :root {
+      --slide-pad: 110px;
+    }
+    html, body { margin: 0; background: #000; }
+
+    deck-stage > section {
+      width: 1920px; height: 1080px;
+      background: var(--black); color: var(--white);
+      position: relative; overflow: hidden;
+      padding: var(--slide-pad);
+      box-sizing: border-box;
+      display: flex; flex-direction: column;
+      font-family: var(--font-body);
+    }
+
+    /* eyebrow + section number */
+    .eyebrow {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .eyebrow.accent { color: var(--yellow); }
+
+    /* signature yellow circle motif */
+    .yellow-orb {
+      position: absolute;
+      top: -260px; right: -260px;
+      width: 720px; height: 720px;
+      border-radius: 50%;
+      background: var(--yellow);
+      opacity: 0.07;
+      pointer-events: none;
+    }
+
+    /* logo lockup top-right */
+    .slide-mark {
+      position: absolute;
+      top: 56px; right: 80px;
+      display: flex; align-items: center; gap: 14px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .slide-mark img { height: 26px; }
+
+    /* page number bottom-left */
+    .pagenum {
+      position: absolute;
+      bottom: 56px; left: 80px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--grey-mid);
+      letter-spacing: 0.2em;
+    }
+
+    /* === Typography === */
+    h1.display {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.025em;
+      line-height: 0.88;
+      font-size: 200px;
+      color: var(--yellow);
+      margin: 0;
+    }
+    h1.display .light { color: var(--white); font-weight: 900; display: block; }
+    h2.big {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.92;
+      font-size: 150px;
+      color: var(--yellow);
+      margin: 0;
+    }
+    h3.title {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      font-size: 96px;
+      color: var(--white);
+      margin: 0;
+    }
+    p.lede {
+      font-family: var(--font-body);
+      font-weight: 350;
+      font-size: 36px;
+      line-height: 1.4;
+      color: var(--grey-mid);
+      max-width: 1100px;
+      margin: 36px 0 0;
+    }
+    .footer-meta {
+      position: absolute;
+      bottom: 56px; right: 80px;
+      display: flex; gap: 40px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+
+    /* ---- Slide-specific layouts ---- */
+
+    /* 01 — Title */
+    .s-title { justify-content: center; }
+    .s-title .eyebrow.accent { margin-bottom: 48px; }
+    .s-title h1 { line-height: 0.85; }
+    .s-title .credit {
+      margin-top: 80px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; gap: 64px;
+      font-family: var(--font-body);
+      font-weight: 700; font-size: 18px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .s-title .credit strong { display: block; color: var(--white); margin-bottom: 6px; font-size: 22px; letter-spacing: 0; text-transform: none; font-weight: 700; }
+
+    /* 02 — Section divider */
+    .s-section { background: var(--yellow); color: var(--black); justify-content: center; }
+    .s-section .eyebrow { color: rgba(0,0,0,0.55); position: absolute; top: 110px; left: 110px; }
+    .s-section h2 { color: var(--black); font-size: 200px; line-height: 0.88; margin: 0; }
+    .s-section .slide-mark { color: rgba(0,0,0,0.55); }
+    .s-section .pagenum { color: rgba(0,0,0,0.55); }
+    .s-section .label { font-size: 24px; letter-spacing: 0.32em; font-weight: 700; text-transform: uppercase; color: rgba(0,0,0,0.6); }
+
+    /* 03 — Big idea / single statement */
+    .s-bigidea { justify-content: center; }
+    .s-bigidea h1 { font-size: 180px; max-width: 1500px; }
+    .s-bigidea h1 .light { display: block; }
+    .s-bigidea .tag { margin-bottom: 48px; }
+
+    /* 04 — Quote */
+    .s-quote { justify-content: center; background: var(--black); position: relative; }
+    .s-quote::before {
+      content: '"';
+      position: absolute;
+      top: 80px; left: 80px;
+      font-family: var(--font-display);
+      font-size: 600px; line-height: 0.6;
+      color: var(--yellow);
+      opacity: 0.12;
+    }
+    .s-quote .q {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.015em;
+      font-size: 112px;
+      color: var(--white);
+      max-width: 1500px;
+      position: relative;
+    }
+    .s-quote .q .hl { color: var(--yellow); }
+    .s-quote .by {
+      margin-top: 56px;
+      display: flex; gap: 32px; align-items: center;
+      position: relative;
+    }
+    .s-quote .by .avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-weight: 900;
+      color: var(--black); font-size: 28px;
+    }
+    .s-quote .by .name {
+      font-family: var(--font-body); font-weight: 700; font-size: 22px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--white);
+    }
+    .s-quote .by .role {
+      font-family: var(--font-body); font-weight: 400; font-size: 18px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-mid);
+    }
+
+    /* 05 — Comparison */
+    .s-compare { padding: 0; flex-direction: row; }
+    .s-compare .col { flex: 1; padding: 110px 90px; display: flex; flex-direction: column; }
+    .s-compare .col .eyebrow { margin-bottom: 32px; }
+    .s-compare .col .heading {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.95;
+      font-size: 96px; margin-bottom: 56px;
+    }
+    .s-compare .col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 22px; }
+    .s-compare .col li {
+      font-family: var(--font-body); font-weight: 500; font-size: 30px;
+      line-height: 1.3; padding-left: 36px; position: relative;
+    }
+    .s-compare .col li::before {
+      content: '×'; position: absolute; left: 0; top: -2px;
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 32px;
+    }
+    .s-compare .col.bad { background: var(--grey-light); color: var(--black); }
+    .s-compare .col.bad .eyebrow { color: rgba(0,0,0,0.45); }
+    .s-compare .col.bad .heading { color: var(--black); }
+    .s-compare .col.bad li::before { color: var(--grey-mid); }
+    .s-compare .col.good { background: var(--black); color: var(--white); }
+    .s-compare .col.good .eyebrow { color: var(--yellow); }
+    .s-compare .col.good .heading { color: var(--yellow); }
+    .s-compare .col.good li::before { content: '→'; color: var(--yellow); }
+
+    /* 06 — Numbers / stats */
+    .s-stats { justify-content: center; }
+    .s-stats .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 60px; margin-top: 64px; }
+    .s-stats .stat .num {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 200px; line-height: 0.85; letter-spacing: -0.03em;
+      color: var(--yellow); display: block;
+    }
+    .s-stats .stat .lbl {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--white); margin-top: 24px; display: block;
+    }
+    .s-stats .stat .sub {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 20px; color: var(--grey-mid);
+      margin-top: 12px; display: block;
+    }
+
+    /* 07 — List / agenda */
+    .s-list h3 { margin-bottom: 60px; }
+    .s-list ol { list-style: none; counter-reset: i; padding: 0; margin: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .s-list li {
+      counter-increment: i;
+      display: grid; grid-template-columns: 160px 1fr 200px; align-items: baseline; gap: 40px;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
+      font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; font-size: 40px; letter-spacing: -0.005em;
+      color: var(--white);
+    }
+    .s-list li::before {
+      content: counter(i, decimal-leading-zero);
+      font-family: var(--font-mono); font-size: 28px; color: var(--yellow);
+      letter-spacing: 0.04em;
+    }
+    .s-list li .dur { font-family: var(--font-mono); font-size: 22px; color: var(--grey-mid); text-align: right; font-weight: 400; letter-spacing: 0.1em; }
+
+    /* 08 — Image + statement */
+    .s-image { padding: 0; flex-direction: row; }
+    .s-image .image-side { flex: 1; background: var(--grey-dark); position: relative; }
+    .s-image image-slot { width: 100%; height: 100%; display: block; }
+    .s-image .text-side { flex: 1; padding: 110px 90px; display: flex; flex-direction: column; justify-content: center; }
+    .s-image .text-side h3 { font-size: 80px; color: var(--yellow); }
+    .s-image .text-side p { font-family: var(--font-body); font-weight: 400; font-size: 26px; line-height: 1.55; color: var(--grey-mid); margin-top: 32px; max-width: 700px; }
+
+    /* 09 — Closing / CTA */
+    .s-cta { background: var(--yellow); color: var(--black); justify-content: center; }
+    .s-cta .eyebrow { color: rgba(0,0,0,0.55); }
+    .s-cta h1.display { color: var(--black); font-size: 240px; }
+    .s-cta .pagenum { color: rgba(0,0,0,0.55); }
+    .s-cta .slide-mark { color: rgba(0,0,0,0.55); }
+    .s-cta .url {
+      margin-top: 64px; padding-top: 32px;
+      border-top: 1px solid rgba(0,0,0,0.18);
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 32px; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <deck-stage>
+
+    <!-- 01 — TITLE -->
+    <section class="s-title">
+      <div class="yellow-orb"></div>
+      <div class="slide-mark"><img src="../assets/logos/dein-dj-coach-wht.png" alt=""><span>Dein DJ Coach</span></div>
+      <div class="eyebrow accent">Online-Kurs · Workshop · 2026</div>
+      <h1 class="display">Von 0<span class="light">auf CDJs</span></h1>
+      <div class="credit">
+        <div><strong>Coach</strong>Jay B.</div>
+        <div><strong>Studio</strong>St. Pauli, Hamburg</div>
+        <div><strong>Niveau</strong>Einsteiger</div>
+      </div>
+      <div class="pagenum">01</div>
+    </section>
+
+    <!-- 02 — SECTION DIVIDER -->
+    <section class="s-section">
+      <div class="eyebrow"><span class="label">Kapitel 01</span></div>
+      <h2 class="big">Grund­<br>lagen</h2>
+      <div class="slide-mark"><span>Dein DJ Coach</span></div>
+      <div class="pagenum">02</div>
+    </section>
+
+    <!-- 03 — BIG IDEA -->
+    <section class="s-bigidea">
+      <div class="yellow-orb"></div>
+      <div class="slide-mark"><img src="../assets/logos/dein-dj-coach-wht.png" alt=""><span>Dein DJ Coach</span></div>
+      <div class="eyebrow accent tag">Die eine Regel</div>
+      <h1 class="display">Phrase,<br><span class="light">nicht Beat.</span></h1>
+      <p class="lede">Mixe auf der musikalischen Phrase, nicht auf einzelne Beats. Die Phrase ist das was du fühlst — der Beat ist das was du zählst.</p>
+      <div class="pagenum">03</div>
+    </section>
+
+    <!-- 04 — QUOTE -->
+    <section class="s-quote">
+      <div class="slide-mark"><img src="../assets/logos/dein-dj-coach-wht.png" alt=""><span>Dein DJ Coach</span></div>
+      <p class="q">Nach vier Wochen habe ich meinen <span class="hl">ersten Gig</span> in der Roten Flora gespielt. Die Grundlagen saßen.</p>
+      <div class="by">
+        <div class="avatar">L</div>
+        <div>
+          <div class="name">Lukas M.</div>
+          <div class="role">Hamburg · Online-Kurs 2025</div>
+        </div>
+      </div>
+      <div class="pagenum">04</div>
+    </section>
+
+    <!-- 05 — COMPARISON -->
+    <section class="s-compare">
+      <div class="col bad">
+        <div class="eyebrow">Vorher</div>
+        <div class="heading">Frust<br>am Pult</div>
+        <ul>
+          <li>Mix verliert das Timing nach 16 Bars</li>
+          <li>EQ-Übergänge klingen "matschig"</li>
+          <li>Cue-Points sitzen auf zufälligen Beats</li>
+          <li>Set baut keine Energy Curve auf</li>
+        </ul>
+      </div>
+      <div class="col good">
+        <div class="eyebrow">Nachher</div>
+        <div class="heading">Solides<br>Set</div>
+        <ul>
+          <li>Sauberes Beatmatching by ear</li>
+          <li>EQ-Übergänge auf Lows, Mids, Highs</li>
+          <li>Cue-Points am Phrase-Start</li>
+          <li>Aufgebauter Spannungsbogen über 60 Min</li>
+        </ul>
+      </div>
+      <div class="slide-mark" style="position:absolute; top:56px; left:80px; right:auto; color:var(--grey-mid);"><span>Dein DJ Coach</span></div>
+      <div class="pagenum" style="position:absolute; bottom:56px; left:80px;">05</div>
+    </section>
+
+    <!-- 06 — STATS -->
+    <section class="s-stats">
+      <div class="slide-mark"><img src="../assets/logos/dein-dj-coach-wht.png" alt=""><span>Dein DJ Coach</span></div>
+      <div class="eyebrow accent">Track record · 2024–2026</div>
+      <h3 class="title" style="margin-top: 28px; font-size:80px;">Das ist drin.</h3>
+      <div class="grid">
+        <div class="stat"><span class="num">200+</span><span class="lbl">DJs gecoacht</span><span class="sub">Einsteiger bis Open-Format</span></div>
+        <div class="stat"><span class="num">4.9</span><span class="lbl">Rating · 5.0</span><span class="sub">Über 80 verifizierte Reviews</span></div>
+        <div class="stat"><span class="num">8</span><span class="lbl">Module · Online</span><span class="sub">~4 Stunden Material</span></div>
+      </div>
+      <div class="pagenum">06</div>
+    </section>
+
+    <!-- 07 — LIST / AGENDA -->
+    <section class="s-list">
+      <div class="slide-mark"><img src="../assets/logos/dein-dj-coach-wht.png" alt=""><span>Dein DJ Coach</span></div>
+      <div class="eyebrow accent" style="margin-bottom:24px;">Kursinhalt · 8 Module</div>
+      <h3 class="title">Was du lernst.</h3>
+      <ol>
+        <li><span>Equipment & Signalfluss</span><span class="dur">30 min</span></li>
+        <li><span>Beatmatching by ear</span><span class="dur">42 min</span></li>
+        <li><span>EQ-Mixing — Lows, Mids, Highs</span><span class="dur">38 min</span></li>
+        <li><span>Phrasing & Song-Struktur</span><span class="dur">28 min</span></li>
+        <li><span>Saubere Übergänge bauen</span><span class="dur">35 min</span></li>
+        <li><span>Cue-Points & Loops</span><span class="dur">32 min</span></li>
+        <li><span>Set-Aufbau · Energy Curve</span><span class="dur">40 min</span></li>
+        <li><span>Dein erstes Mini-Set</span><span class="dur">25 min</span></li>
+      </ol>
+      <div class="pagenum">07</div>
+    </section>
+
+    <!-- 08 — IMAGE + STATEMENT -->
+    <section class="s-image">
+      <div class="image-side">
+        <image-slot id="slide-image" placeholder="CDJ / Studio / Hand on jog wheel" shape="rect"></image-slot>
+      </div>
+      <div class="text-side">
+        <div class="eyebrow accent" style="margin-bottom:28px;">Live im Studio</div>
+        <h3 class="title">Echte Decks.<br>Echtes Feedback.</h3>
+        <p>Wir arbeiten an deinem Setup — egal ob CDJs, Controller oder Vinyl. Du spielst, ich höre, wir bauen direkt um. Kein Lehrbuch, kein Bullshit.</p>
+        <div class="footer-meta" style="position:static; margin-top: 48px; padding: 0;">
+          <div>Hamburg · St. Pauli</div>
+          <div>Online via Twitch</div>
+        </div>
+      </div>
+      <div class="slide-mark" style="background: rgba(0,0,0,0.5); padding: 8px 16px; backdrop-filter: blur(6px);"><span>Dein DJ Coach</span></div>
+      <div class="pagenum" style="position:absolute; bottom:56px; left:80px; color: rgba(255,255,255,0.6);">08</div>
+    </section>
+
+    <!-- 09 — CLOSING / CTA -->
+    <section class="s-cta">
+      <div class="slide-mark"><span>Dein DJ Coach</span></div>
+      <div class="eyebrow">Jetzt starten</div>
+      <h1 class="display" style="margin-top: 32px;">Leg auf.</h1>
+      <div class="url">deindjcoach.de / kurs</div>
+      <div class="pagenum">09</div>
+    </section>
+
+  </deck-stage>
+
+  <script src="deck-stage.js"></script>
+  <script src="image-slot.js"></script>
+</body>
+</html>

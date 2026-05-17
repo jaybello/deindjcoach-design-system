@@ -1,0 +1,268 @@
+/* ============================================================
+   Dein DJ Coach — Web UI kit styles
+   Layered on top of colors_and_type.css + components.css
+   ============================================================ */
+
+.ddc-app {
+  background: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* ---------- HEADER ---------- */
+.ddc-header {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 40px;
+  padding: 20px 64px;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.ddc-header__brand { display: flex; align-items: center; cursor: pointer; }
+.ddc-header__brand img { height: 36px; width: auto; }
+.ddc-header__nav { display: flex; gap: 28px; flex: 1; margin-left: 32px; }
+.ddc-header__nav .nav-link { cursor: pointer; color: var(--white); }
+.ddc-header__cta { display: flex; align-items: center; gap: 20px; }
+.ddc-header__cta .nav-link { cursor: pointer; color: var(--white); }
+
+/* ---------- HERO ---------- */
+.ddc-hero {
+  position: relative;
+  padding: 120px 64px 96px;
+  overflow: hidden;
+  background: var(--black);
+}
+.ddc-hero__bg {
+  position: absolute; top: -260px; right: -260px;
+  width: 720px; height: 720px;
+  border-radius: 50%;
+  background: var(--yellow);
+  opacity: 0.07;
+  pointer-events: none;
+}
+.ddc-hero__inner { position: relative; max-width: 1100px; }
+.ddc-hero__h {
+  font-family: var(--font-display); font-weight: 900;
+  text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9;
+  font-size: clamp(72px, 12vw, 160px);
+  color: var(--white);
+  margin: 18px 0 28px;
+}
+.ddc-hero__h span { color: var(--yellow); display: block; }
+.ddc-hero__sub {
+  font-family: var(--font-body);
+  font-size: 19px; line-height: 1.5;
+  color: var(--grey-mid);
+  max-width: 560px;
+  margin-bottom: 36px;
+}
+.ddc-hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }
+.ddc-hero__meta {
+  margin-top: 80px;
+  display: flex; gap: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.ddc-hero__meta > div {
+  display: flex; flex-direction: column; gap: 4px;
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--grey-mid);
+}
+.ddc-hero__meta strong {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 22px; letter-spacing: -0.01em; color: var(--white);
+  text-transform: none;
+}
+
+/* ---------- SECTION HEAD ---------- */
+.ddc-section-head { margin-bottom: 60px; }
+.ddc-section-head .eyebrow { margin-bottom: 16px; display: block; }
+
+/* ---------- COURSES ---------- */
+.ddc-courses { padding: 96px 64px; background: var(--black); }
+.ddc-courses__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--yellow);  /* gap line color */
+}
+.ddc-course-card {
+  cursor: pointer; min-height: 360px;
+  transition: transform var(--dur-base) var(--ease-snap);
+  position: relative;
+}
+.ddc-course-card:hover { transform: translateY(-3px); }
+.ddc-course-card .card__title { font-size: 36px; margin-top: 8px; }
+.ddc-course-card__body { font-size: 15px; line-height: 1.55; margin-top: 8px; opacity: 0.85; }
+.ddc-course-card__foot {
+  margin-top: auto; padding-top: 28px;
+  font-family: var(--font-body); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.ddc-course-card__foot .btn--ghost::after { transition: transform var(--dur-base) var(--ease-out); }
+.ddc-course-card:hover .btn--ghost::after { transform: translateX(6px); }
+
+/* ---------- COACHING BLOCK ---------- */
+.ddc-coaching { padding: 120px 64px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: end; }
+.ddc-coaching__inner .h1 { margin: 18px 0 28px; }
+.ddc-coaching__body { font-size: 18px; line-height: 1.55; max-width: 520px; margin-bottom: 32px; color: rgba(10,10,10,0.85); }
+.ddc-coaching__stats { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.ddc-coaching__stats li {
+  display: flex; align-items: baseline; gap: 18px;
+  padding: 18px 0; border-top: 1px solid rgba(10,10,10,0.15);
+}
+.ddc-coaching__stats .num {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 56px; letter-spacing: -0.02em; line-height: 0.9;
+  width: 120px;
+}
+.ddc-coaching__stats .lbl {
+  font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+}
+
+/* ---------- TIPS ---------- */
+.ddc-tips { padding: 96px 64px; }
+.ddc-tips__grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  background: var(--grey-dark);
+}
+.ddc-tip {
+  display: flex; flex-direction: column; padding: 36px 32px;
+  min-height: 280px; cursor: pointer; position: relative;
+  text-decoration: none;
+  transition: transform var(--dur-base) var(--ease-snap);
+}
+.ddc-tip:hover { transform: translateY(-2px); }
+.ddc-tip__tag { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.5; }
+.ddc-tip__title {
+  margin-top: auto;
+  font-family: var(--font-display); font-weight: 900;
+  text-transform: uppercase; font-size: 30px; line-height: 0.92; letter-spacing: -0.01em;
+}
+.ddc-tip__cta { margin-top: 18px; font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 700; }
+.ddc-tip--dark   { background: var(--black);      color: var(--yellow); }
+.ddc-tip--yellow { background: var(--yellow);     color: var(--black);  }
+.ddc-tip--grey   { background: var(--grey-light); color: var(--black);  }
+.ddc-tip.accent-strip::before { background: var(--yellow); }
+
+/* ---------- FOOTER ---------- */
+.ddc-footer { padding: 64px 64px 28px; background: var(--black); border-top: 1px solid var(--border); }
+.ddc-footer__top { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; padding-bottom: 48px; }
+.ddc-footer__brand img { height: 44px; width: auto; cursor: pointer; }
+.ddc-footer__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.ddc-footer__cols .eyebrow { display: block; margin-bottom: 12px; }
+.ddc-footer__link { display: block; cursor: pointer; color: var(--white); padding: 6px 0; font-size: 14px; text-decoration: none; transition: color var(--dur-base); }
+.ddc-footer__link:hover { color: var(--yellow); }
+.ddc-footer__bot {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 28px; border-top: 1px solid var(--border);
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--grey-mid);
+}
+
+/* ---------- COURSE DETAIL ---------- */
+.ddc-detail { padding: 64px 64px 96px; background: var(--black); color: var(--white); max-width: 1200px; margin: 0 auto; }
+.ddc-detail__crumb { margin-bottom: 32px; }
+.ddc-detail__crumb .nav-link { cursor: pointer; color: var(--white); }
+.ddc-detail__head .h-display {
+  font-family: var(--font-display); font-weight: 900;
+  text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9;
+  font-size: clamp(60px, 10vw, 140px);
+  color: var(--white);
+  margin: 14px 0 24px;
+}
+.ddc-detail__head .h-display span:first-child { color: var(--yellow); }
+.ddc-detail__lede { font-size: 19px; line-height: 1.55; color: var(--grey-mid); max-width: 600px; margin-bottom: 32px; }
+.ddc-detail__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 96px; }
+.ddc-detail__modules .eyebrow { display: block; margin-bottom: 24px; }
+.ddc-detail__modules ul { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--border); }
+.ddc-detail__module {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 0; border-bottom: 1px solid var(--border);
+  transition: background var(--dur-base);
+}
+.ddc-detail__module:hover { background: rgba(255,214,0,0.04); padding-left: 12px; }
+.ddc-detail__module-name {
+  font-family: var(--font-display); font-weight: 700;
+  text-transform: uppercase; font-size: 18px; letter-spacing: 0.02em;
+}
+.ddc-detail__module-time { font-family: var(--font-mono); font-size: 13px; color: var(--grey-mid); }
+
+.ddc-detail__quote {
+  margin-top: 96px; padding: 80px 64px;
+  position: relative;
+}
+.ddc-detail__quote-mark {
+  font-family: var(--font-display); font-weight: 900;
+  font-size: 200px; line-height: 0.6; color: var(--black);
+  position: absolute; top: 32px; left: 56px; opacity: 0.15;
+}
+.ddc-detail__quote p {
+  position: relative;
+  font-family: var(--font-display); font-weight: 900;
+  text-transform: uppercase; font-size: clamp(28px, 4vw, 52px);
+  line-height: 1; letter-spacing: -0.01em;
+  max-width: 800px;
+}
+.ddc-detail__quote-by {
+  margin-top: 28px; font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase;
+}
+
+/* ---------- MODAL ---------- */
+.ddc-modal-scrim {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px;
+  animation: ddcFade var(--dur-base) var(--ease-out);
+}
+@keyframes ddcFade { from { opacity: 0; } to { opacity: 1; } }
+.ddc-modal {
+  position: relative; width: 100%; max-width: 560px;
+  background: var(--black); color: var(--white);
+  border: 1px solid var(--border);
+  padding: 40px 44px 36px;
+  box-shadow: var(--shadow-pop);
+  animation: ddcPop var(--dur-slow) var(--ease-out);
+}
+@keyframes ddcPop {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ddc-modal__close {
+  position: absolute; top: 16px; right: 16px;
+  background: transparent; border: none; color: var(--white);
+  font-size: 28px; line-height: 1; cursor: pointer; padding: 4px 10px;
+  transition: color var(--dur-base);
+}
+.ddc-modal__close:hover { color: var(--yellow); }
+.ddc-modal__lede { color: var(--grey-mid); margin-top: 8px; font-size: 15px; }
+.ddc-modal__form { margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+.ddc-modal__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.ddc-modal__interest { display: flex; flex-wrap: wrap; gap: 8px; }
+.ddc-modal__interest .field-label { width: 100%; margin-bottom: 4px; }
+.ddc-pill {
+  display: inline-flex; align-items: center;
+  padding: 10px 14px; cursor: pointer;
+  border: 1px solid var(--border); color: var(--white);
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700;
+  transition: all var(--dur-base);
+}
+.ddc-pill input { display: none; }
+.ddc-pill:has(input:checked) { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+.ddc-modal__cta { margin-top: 8px; }
+.ddc-modal__done { text-align: left; padding: 8px 0 4px; }
+.ddc-modal__done .h1 { margin: 12px 0 16px; }
+.ddc-modal__done .btn { margin-top: 24px; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .ddc-header { padding: 16px 24px; gap: 16px; }
+  .ddc-header__nav { display: none; }
+  .ddc-hero, .ddc-courses, .ddc-tips, .ddc-footer, .ddc-detail { padding-left: 24px; padding-right: 24px; }
+  .ddc-coaching { grid-template-columns: 1fr; padding: 64px 24px; gap: 32px; }
+  .ddc-courses__grid, .ddc-tips__grid, .ddc-footer__cols { grid-template-columns: 1fr; }
+  .ddc-footer__top { grid-template-columns: 1fr; gap: 32px; }
+  .ddc-hero__meta { gap: 24px; flex-wrap: wrap; }
+}

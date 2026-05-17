@@ -1,0 +1,18 @@
+/* Shared base for design-system preview cards.
+   Each card is ~700px wide. Body is unstyled black so the
+   card content controls its own surface color. */
+@import url('../colors_and_type.css');
+
+html, body {
+  width: 700px;
+  background: transparent;
+}
+body {
+  display: block;
+  font-family: var(--font-body);
+}
+.card-frame {
+  width: 700px;
+  display: flex;
+  align-items: stretch;
+}

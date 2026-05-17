@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #0A0A0A; }
+  .tile { padding: 40px 32px; display: flex; align-items: center; justify-content: center; min-height: 180px; }
+  .tile img { height: 50px; width: auto; }
+  .light  { background: var(--white); }
+  .yellow { background: var(--yellow); }
+  .grey   { background: var(--grey-light); }
+  .dark   { background: var(--black); }
+  .label { position: absolute; bottom: 10px; left: 12px; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; }
+  .tile { position: relative; }
+  .light .label, .yellow .label, .grey .label { color: rgba(0,0,0,0.4); }
+  .dark .label { color: rgba(255,255,255,0.4); }
+</style></head>
+<body>
+  <div class="tile light">  <img src="../assets/logos/dein-dj-coach-blk.png"><span class="label">On white</span></div>
+  <div class="tile dark">   <img src="../assets/logos/dein-dj-coach-wht.png"><span class="label">On black</span></div>
+  <div class="tile yellow"> <img src="../assets/logos/dein-dj-coach-blk.png"><span class="label">On yellow</span></div>
+  <div class="tile grey">   <img src="../assets/logos/dein-dj-coach-blk.png"><span class="label">On grey</span></div>
+</body></html>

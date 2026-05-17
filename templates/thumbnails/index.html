@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Dein DJ Coach — YouTube Thumbnails</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <style>
+    body {
+      margin: 0;
+      background: #1a1a1a;
+      padding: 48px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      max-width: 1500px;
+      margin-inline: auto;
+    }
+    .frame { display: flex; flex-direction: column; gap: 12px; }
+    .frame > .tag {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--grey-mid);
+      display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    }
+    .slot-key {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 10px; letter-spacing: 0.18em;
+      padding: 2px 8px;
+    }
+    .slot-key.face  { background: var(--yellow); color: var(--black); }
+    .slot-key.topic { background: transparent; color: var(--yellow); border: 1px solid var(--yellow); }
+
+    .thumb {
+      width: 100%; aspect-ratio: 16 / 9;
+      position: relative; overflow: hidden;
+      background: var(--black);
+      box-sizing: border-box;
+    }
+
+    /* === Shared bits === */
+    .mark {
+      position: absolute; height: 22px; width: auto; display: block;
+      bottom: 18px; left: 22px;
+      z-index: 10;
+    }
+    .chip {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 16px; letter-spacing: 0.22em; text-transform: uppercase;
+      padding: 6px 10px;
+      display: inline-block;
+    }
+    .chip.on-dark   { background: var(--yellow); color: var(--black); }
+    .chip.on-light  { background: var(--black);  color: var(--yellow); }
+
+    /* image-slot fills its wrapper */
+    .face-zone, .topic-zone { position: relative; overflow: hidden; }
+    .face-zone image-slot,
+    .topic-zone image-slot { width: 100%; height: 100%; display: block; }
+
+    /* Circle face badge — solid bg behind cutout, yellow ring */
+    .face-circle {
+      position: absolute;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--yellow);
+      border: 4px solid var(--yellow);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      z-index: 6;
+    }
+    .face-circle.on-black { background: var(--black); }
+    .face-circle image-slot { width: 100%; height: 100%; display: block; }
+
+    /* ============================================================
+       T01 — Face full-bleed BEHIND text, dark canvas
+       ============================================================ */
+    .t01 { background: var(--black); }
+    .t01 .face-zone {
+      position: absolute; inset: 0;
+      z-index: 1;
+    }
+    .t01 .face-zone::before {
+      content: ''; position: absolute;
+      right: 0; bottom: 0;
+      width: 62%; height: 100%;
+      background: linear-gradient(95deg, transparent 0%, rgba(255,214,0,0.18) 60%, rgba(255,214,0,0.32) 100%);
+    }
+    .t01 .text-overlay {
+      position: absolute; inset: 0;
+      padding: 32px;
+      z-index: 5;
+      display: flex; flex-direction: column;
+      gap: 14px;
+      pointer-events: none;
+    }
+    .t01 .text-overlay .chip { align-self: flex-start; }
+    .t01 .text-overlay h {
+      margin: 0;
+      max-width: 67%;
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; line-height: 0.86; letter-spacing: -0.02em;
+      font-size: 64px;
+      color: var(--yellow);
+      text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    }
+    .t01 .text-overlay h .lt { color: var(--white); display: block; }
+    .t01 .accent-bar {
+      position: absolute; top: 0; right: 0;
+      width: 8px; height: 100%; background: var(--yellow); z-index: 9;
+    }
+
+    /* ============================================================
+       T02 — Big number · digit + face (overlapping center) / text + topic
+       ============================================================ */
+    .t02 {
+      display: grid; grid-template-columns: 74fr 26fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      background: var(--yellow);
+      position: relative;
+    }
+    .t02 .digit-cell {
+      grid-column: 1; grid-row: span 2;
+      background: var(--yellow);
+      position: relative;
+      display: flex; align-items: center; justify-content: flex-start;
+      padding-left: 6%;
+      overflow: hidden;
+    }
+    .t02 .digit {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 460px; line-height: 0.78; letter-spacing: -0.05em;
+      color: var(--black);
+      position: relative;
+      z-index: 1;
+    }
+    .t02 .face-cell {
+      position: absolute;
+      top: 0; bottom: 0;
+      /* centered between digit-column and the right text/topic stack */
+      left: 30%;
+      width: 44%;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .t02 .face-cell image-slot { width: 100%; height: 100%; display: block; }
+    .t02 .text-cell {
+      grid-column: 2; grid-row: 1;
+      background: var(--black); color: var(--white);
+      padding: 18px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 3;
+    }
+    .t02 .text-cell h {
+      margin: 0;
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; line-height: 0.92; letter-spacing: -0.015em;
+      font-size: 28px;
+    }
+    .t02 .topic-cell {
+      grid-column: 2; grid-row: 2;
+      background: var(--grey-dark);
+      position: relative; z-index: 3;
+    }
+
+    /* ============================================================
+       T03 — Footage full-bleed + big face circle (bottom-right), text OVER circle
+       ============================================================ */
+    .t03 { background: var(--black); }
+    .t03 .topic-zone {
+      position: absolute; inset: 0;
+      z-index: 1;
+    }
+    .t03 .topic-zone::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 35%, transparent 50%, rgba(0,0,0,0.92) 100%);
+      pointer-events: none;
+    }
+    .t03 .accent-strip {
+      position: absolute; top: 0; left: 0; width: 8px; height: 100%;
+      background: var(--yellow); z-index: 4;
+    }
+    /* Logo moved to top so it doesn't clash with H1 */
+    .t03 .mark {
+      bottom: auto; top: 18px; left: 22px;
+      z-index: 12;
+    }
+    .t03 .face-circle.t03-face {
+      position: absolute;
+      width: 40%; aspect-ratio: 1;
+      right: 22px; bottom: 22px;
+      z-index: 5; /* sits below text overlay */
+    }
+    .t03 .overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px 28px 28px 32px;
+      gap: 10px;
+      z-index: 7; /* text OVER face circle */
+      pointer-events: none;
+    }
+    .t03 .ov-text { display: flex; flex-direction: column; gap: 10px; }
+    .t03 .ov-text .chip { align-self: flex-start; }
+    .t03 .ov-text h {
+      margin: 0;
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; line-height: 0.88; letter-spacing: -0.02em;
+      font-size: 56px; color: var(--white);
+      text-shadow: 0 4px 24px rgba(0,0,0,0.85), 0 2px 6px rgba(0,0,0,0.9);
+    }
+    .t03 .ov-text h .hl { color: var(--yellow); display: block; }
+
+    /* ============================================================
+       T04 — Comparison · Falsch (topic + X) | Richtig (face circle on dark)
+       ============================================================ */
+    .t04 {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--yellow);
+    }
+    .t04 .col-label {
+      position: absolute; top: 0; left: 0;
+      padding: 8px 14px;
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase;
+      z-index: 4;
+    }
+    .t04 .col-label.bad  { background: var(--grey-light); color: var(--black); }
+    .t04 .col-label.good { background: var(--yellow); color: var(--black); }
+
+    .t04 .topic-cell {
+      position: relative;
+      background: var(--grey-dark);
+    }
+    .t04 .topic-cell::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 2;
+    }
+    .t04 .x-mark {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .t04 .x-mark::before,
+    .t04 .x-mark::after {
+      content: ''; position: absolute;
+      width: 80%; height: 6px;
+      background: var(--yellow);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.4);
+    }
+    .t04 .x-mark::before { transform: rotate(20deg); }
+    .t04 .x-mark::after  { transform: rotate(-20deg); }
+
+    .t04 .right-cell {
+      position: relative;
+      background: var(--black);
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+    .t04 .right-cell .face-stage {
+      position: relative;
+    }
+    /* Circle ~20% smaller and centered across BOTH columns (overlaps left half) */
+    .t04 .face-circle.t04-face {
+      position: absolute;
+      width: 31%;
+      aspect-ratio: 1;
+      left: 50%;
+      top: 42%;
+      transform: translate(-50%, -50%);
+      z-index: 8;
+    }
+    .t04 .right-cell .text-cell {
+      padding: 16px 20px 18px;
+      background: var(--yellow); color: var(--black);
+    }
+    .t04 .right-cell .text-cell h {
+      margin: 0;
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; font-size: 30px; line-height: 0.92; letter-spacing: -0.015em;
+    }
+    .t04 .right-cell .text-cell .by {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: rgba(0,0,0,0.55); margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- THUMB 01 — Face full-bleed behind, text overlay -->
+  <div class="frame">
+    <div class="tag">
+      <span>01 · Tutorial / "Häufiger Fehler"</span>
+      <span class="slot-key face">FACE (cutout, full-bleed behind text)</span>
+    </div>
+    <div class="thumb t01">
+      <div class="face-zone">
+        <image-slot id="thumb-01-face" placeholder="Dein Gesicht (PNG cutout)" shape="rect" fit="contain" position="100% 100%"></image-slot>
+      </div>
+      <div class="accent-bar"></div>
+      <div class="text-overlay">
+        <span class="chip on-dark">Tipp #07</span>
+        <h>Der häufigste<br>Fehler beim<br><span class="lt">Beatmatching</span></h>
+      </div>
+      <img class="mark" src="../../assets/logos/dein-dj-coach-wht.png" alt="Dein DJ Coach">
+    </div>
+  </div>
+
+  <!-- THUMB 02 — Big number + full face + topic inset -->
+  <div class="frame">
+    <div class="tag">
+      <span>02 · Big number / list video</span>
+      <span class="slot-key face">FACE (cutout, full body, no crop)</span>
+      <span class="slot-key topic">TOPIC</span>
+    </div>
+    <div class="thumb t02">
+      <div class="digit-cell">
+        <span class="digit">3</span>
+      </div>
+      <div class="text-cell">
+        <h>Regeln<br>für saubere<br>Mixes.</h>
+      </div>
+      <div class="topic-cell topic-zone">
+        <image-slot id="thumb-02-topic" placeholder="Mixer / EQ-Knöpfe" shape="rect"></image-slot>
+      </div>
+      <div class="face-cell face-zone">
+        <image-slot id="thumb-02-face" placeholder="Dein Gesicht (PNG cutout, ganze Pose)" shape="rect" fit="contain" position="50% 100%"></image-slot>
+      </div>
+    </div>
+  </div>
+
+  <!-- THUMB 03 — Topic full-bleed + bigger circle face with yellow bg -->
+  <div class="frame">
+    <div class="tag">
+      <span>03 · Tutorial with footage</span>
+      <span class="slot-key face">FACE (circle, yellow bg behind cutout)</span>
+      <span class="slot-key topic">TOPIC (full-bleed)</span>
+    </div>
+    <div class="thumb t03">
+      <div class="topic-zone">
+        <image-slot id="thumb-03-topic" placeholder="CDJ · Hand am Jog Wheel · Studio · Screenshot" shape="rect"></image-slot>
+      </div>
+      <div class="accent-strip"></div>
+      <div class="face-circle t03-face">
+        <image-slot id="thumb-03-face" placeholder="Dein Gesicht" shape="rect" fit="contain" position="50% 100%"></image-slot>
+      </div>
+      <div class="overlay">
+        <div class="ov-text">
+          <span class="chip on-light">Folge 12</span>
+          <h>Cue-Points<br><span class="hl">richtig setzen.</span></h>
+        </div>
+      </div>
+      <img class="mark" src="../../assets/logos/dein-dj-coach-wht.png" alt="Dein DJ Coach">
+    </div>
+  </div>
+
+  <!-- THUMB 04 — Comparison: topic (X-marked) | circle face on dark -->
+  <div class="frame">
+    <div class="tag">
+      <span>04 · Comparison / Mythen-Check</span>
+      <span class="slot-key face">FACE (circle, yellow bg behind cutout)</span>
+      <span class="slot-key topic">TOPIC</span>
+    </div>
+    <div class="thumb t04">
+      <div class="face-circle t04-face">
+        <image-slot id="thumb-04-face" placeholder="Dein Gesicht (cutout)" shape="rect" fit="contain" position="50% 100%"></image-slot>
+      </div>
+      <div class="topic-cell">
+        <span class="col-label bad">Falsch</span>
+        <div class="topic-zone" style="position:absolute;inset:0;">
+          <image-slot id="thumb-04-topic" placeholder="Sync-Button / Software-Screenshot" shape="rect"></image-slot>
+        </div>
+        <span class="x-mark"></span>
+      </div>
+      <div class="right-cell">
+        <span class="col-label good">Richtig</span>
+        <div class="face-stage"></div>
+        <div class="text-cell">
+          <h>By ear, nicht<br>by Sync.</h>
+          <div class="by">Mythen-Check · Folge 04</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../slides/image-slot.js"></script>
+</body>
+</html>

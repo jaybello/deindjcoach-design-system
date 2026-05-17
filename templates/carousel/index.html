@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Dein DJ Coach — Social Carousel</title>
+  <link rel="stylesheet" href="../../colors_and_type.css" />
+  <style>
+    body {
+      margin: 0;
+      background: #1a1a1a;
+      padding: 40px 32px 64px;
+      font-family: var(--font-body);
+      color: var(--white);
+    }
+    .page { max-width: 1500px; margin: 0 auto; }
+
+    /* === Header === */
+    .head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px; margin-bottom: 32px;
+    }
+    .head .brand { display: flex; align-items: center; gap: 14px; }
+    .head .brand img { height: 28px; }
+    .head .brand span {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 12px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+    .head .controls { display: flex; align-items: center; gap: 14px; }
+    .head .seg {
+      display: inline-flex; gap: 0;
+      border: 1px solid var(--border);
+    }
+    .head .seg button {
+      all: unset; cursor: pointer;
+      padding: 8px 14px;
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--grey-mid);
+      transition: all var(--dur-base);
+    }
+    .head .seg button.is-active { background: var(--yellow); color: var(--black); }
+    .head .meta {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--grey-mid);
+    }
+
+    /* === Carousel viewer === */
+    .viewer {
+      background: #0a0a0a;
+      border: 1px solid var(--border);
+      padding: 36px;
+      display: grid; grid-template-columns: 1fr 320px; gap: 36px;
+      align-items: start;
+    }
+
+    .stage {
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+    }
+    .stage__deck {
+      position: relative;
+      width: 100%; max-width: 720px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+    .stage__rail {
+      position: absolute; inset: 0;
+      display: flex;
+      transition: transform var(--dur-slow) var(--ease-out);
+      will-change: transform;
+    }
+    .stage .ig-slide {
+      flex: 0 0 100%;
+      width: 100%; aspect-ratio: 1 / 1;
+    }
+    .stage__nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px;
+      background: rgba(10,10,10,0.85);
+      color: var(--white);
+      border: 1px solid var(--border);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all var(--dur-base);
+      z-index: 10;
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 18px;
+      backdrop-filter: blur(8px);
+    }
+    .stage__nav:hover { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .stage__nav.prev { left: 12px; }
+    .stage__nav.next { right: 12px; }
+    .stage__nav:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .stage__dots {
+      display: flex; gap: 6px;
+    }
+    .stage__dot {
+      all: unset; cursor: pointer;
+      width: 7px; height: 7px; background: var(--grey-mid);
+      transition: all var(--dur-base);
+    }
+    .stage__dot.is-current { background: var(--yellow); width: 24px; }
+    .stage__counter {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--grey-mid); letter-spacing: 0.1em;
+    }
+
+    /* Right column — thumbnails */
+    .strip {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .strip__head {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--grey-mid); margin-bottom: 12px;
+    }
+    .strip__item {
+      all: unset; cursor: pointer;
+      display: grid; grid-template-columns: 56px 1fr;
+      align-items: center; gap: 14px;
+      padding: 8px;
+      border: 1px solid transparent;
+      transition: all var(--dur-base);
+    }
+    .strip__item:hover { background: rgba(255,255,255,0.03); }
+    .strip__item.is-active { border-color: var(--yellow); background: rgba(255,214,0,0.04); }
+    .strip__thumb {
+      width: 56px; aspect-ratio: 1 / 1;
+      background: var(--black); position: relative; overflow: hidden;
+    }
+    .strip__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .strip__num {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--yellow); letter-spacing: 0.06em;
+    }
+    .strip__label {
+      font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; font-size: 13px; letter-spacing: 0.005em;
+      color: var(--white); line-height: 1;
+    }
+    .strip__type {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--grey-mid); margin-top: 4px;
+    }
+
+    /* ===========================================
+       SLIDE BASES — Instagram square 1080x1080
+       Each .ig-slide renders into a 1:1 box. Inner uses px units scaled
+       to a notional 1080 grid; relative units recommended for headlines.
+       =========================================== */
+    .ig-slide {
+      position: relative; overflow: hidden;
+      background: var(--black); color: var(--white);
+      box-sizing: border-box;
+      container-type: inline-size;
+      font-family: var(--font-body);
+    }
+    .ig-slide .mark {
+      position: absolute; bottom: 6%; left: 6%;
+      height: 4%; width: auto; z-index: 5;
+    }
+    .ig-slide .num {
+      position: absolute; bottom: 6%; right: 6%;
+      font-family: var(--font-mono);
+      font-size: 2.6cqi;
+      letter-spacing: 0.1em;
+      color: var(--grey-mid);
+      z-index: 5;
+    }
+    .ig-slide.on-yellow { background: var(--yellow); color: var(--black); }
+    .ig-slide.on-yellow .num { color: rgba(0,0,0,0.55); }
+    .ig-slide.on-white  { background: var(--white);  color: var(--black); }
+    .ig-slide.on-white  .num { color: var(--grey-mid); }
+
+    /* shared eyebrow */
+    .ig-ey {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 2.2cqi; letter-spacing: 0.32em; text-transform: uppercase;
+    }
+
+    /* swipe indicator — points right */
+    .swipe {
+      position: absolute; right: 7%; bottom: 7%;
+      display: inline-flex; align-items: center; gap: 1.4cqi;
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 2cqi; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--yellow);
+      z-index: 5;
+    }
+    .swipe .arrow {
+      font-family: var(--font-display); font-weight: 900; font-size: 5cqi;
+      line-height: 0.8;
+      animation: swipeBob 1.6s var(--ease-out) infinite;
+    }
+    @keyframes swipeBob { 0%,100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+
+    /* === SLIDE 01 — HOOK === */
+    .s-01 {
+      background: var(--yellow); color: var(--black);
+      display: grid; grid-template-rows: auto 1fr auto;
+      padding: 7% 7% 11%;
+    }
+    .s-01 .ig-ey { color: rgba(0,0,0,0.55); }
+    .s-01 .s01-body {
+      display: grid; grid-template-columns: 1.05fr 1fr;
+      gap: 5cqi; align-items: center;
+      margin-top: 4%;
+    }
+    .s-01 h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 0.86;
+      font-size: 11cqi; display: block; margin: 0;
+    }
+    .s-01 h .lt { font-weight: 900; display: block; }
+    .s-01 .hero {
+      aspect-ratio: 1 / 1.05;
+      background: var(--black);
+      border: 0.6cqi solid var(--black);
+      box-shadow: 1.2cqi 1.2cqi 0 0 rgba(0,0,0,0.18);
+      overflow: hidden; position: relative;
+      transform: rotate(2.2deg);
+    }
+    .s-01 .hero image-slot { width: 100%; height: 100%; display: block; }
+    .s-01 .swipe { color: var(--black); position: absolute; right: 7%; bottom: 7%; }
+    .s-01 .swipe .arrow { color: var(--black); }
+
+    /* === SLIDE 02 — PROBLEM === */
+    .s-02 { padding: 8% 8% 14%; display: flex; flex-direction: column; justify-content: flex-end; }
+    .s-02 .ig-ey { color: var(--yellow); margin-bottom: 5%; }
+    .s-02 h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.9;
+      font-size: 13cqi; color: var(--white); display: block;
+    }
+    .s-02 h .strike {
+      color: var(--yellow);
+      text-decoration: line-through; text-decoration-thickness: 0.8cqi;
+      text-decoration-color: var(--white);
+    }
+    .s-02 .accent-bar {
+      position: absolute; top: 0; left: 0; width: 1.2cqi; height: 100%;
+      background: var(--yellow);
+    }
+    /* Slide 02 — push logo above so it doesn't clash with H1 */
+    .s-02 .mark { bottom: auto; top: 7%; left: 8%; height: 4.5%; }
+
+    /* === SLIDE 03 — BIG NUMBER === */
+    .s-03 { background: var(--yellow); color: var(--black); padding: 8%; display: flex; flex-direction: column; }
+    .s-03 .ig-ey { color: rgba(0,0,0,0.55); margin-bottom: 3%; }
+    .s-03 .digit {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 60cqi; line-height: 0.78; letter-spacing: -0.05em;
+      color: var(--black); margin-left: -2cqi;
+    }
+    .s-03 h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 0.92;
+      font-size: 7.5cqi; margin-top: 2%;
+    }
+
+    /* === SLIDE 04 — TIP with face === */
+    .s-04 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--yellow); }
+    .s-04 .cell { background: var(--black); position: relative; overflow: hidden; }
+    .s-04 .text-cell {
+      padding: 10% 9% 10% 11%;
+      display: flex; flex-direction: column; gap: 6%; justify-content: center;
+    }
+    .s-04 .text-cell .ig-ey { color: var(--yellow); }
+    .s-04 .text-cell .step {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 14cqi; color: var(--yellow); line-height: 0.9; letter-spacing: -0.02em;
+    }
+    .s-04 .text-cell h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.9;
+      font-size: 7.5cqi; color: var(--white); margin: 0;
+    }
+    .s-04 .text-cell p {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 2.6cqi; line-height: 1.45; color: var(--grey-mid); margin: 0;
+    }
+    .s-04 .face-cell image-slot { width: 100%; height: 100%; display: block; }
+
+    /* === SLIDE 05 — Bullet list === */
+    .s-05 { background: var(--white); color: var(--black); padding: 8%; display: flex; flex-direction: column; }
+    .s-05 .ig-ey { color: var(--grey-mid); margin-bottom: 4%; }
+    .s-05 h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.9;
+      font-size: 10cqi; color: var(--black); margin: 0 0 5%;
+    }
+    .s-05 ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0; }
+    .s-05 li {
+      display: grid; grid-template-columns: 4cqi auto 1fr; align-items: baseline; column-gap: 2.4cqi;
+      font-family: var(--font-display); font-weight: 700;
+      text-transform: uppercase; font-size: 3cqi; line-height: 1; letter-spacing: -0.01em;
+      padding-top: 2.8%; padding-bottom: 2.8%;
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+      color: var(--black);
+      white-space: nowrap;
+    }
+    .s-05 li:first-child { padding-top: 0; }
+    .s-05 li:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 1%; }
+    .s-05 li::before {
+      content: '→';
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 3.6cqi;
+      color: var(--yellow);
+      -webkit-text-stroke: 0.3cqi var(--black);
+    }
+    .s-05 li > span:last-child {
+      color: rgba(0,0,0,0.6);
+      font-weight: 700;
+    }
+    /* Slide 05 — logo top-right */
+    .s-05 .mark { bottom: auto; left: auto; top: 7%; right: 7%; height: 4%; }
+
+    /* === SLIDE 06 — Image-led step === */
+    .s-06 { display: grid; grid-template-rows: 60% 40%; gap: 2px; background: var(--yellow); }
+    .s-06 .topic { background: var(--grey-dark); position: relative; overflow: hidden; }
+    .s-06 .topic image-slot { width: 100%; height: 100%; display: block; }
+    .s-06 .text-cell {
+      background: var(--black); color: var(--white);
+      padding: 6% 7% 12%;
+      display: flex; flex-direction: column; gap: 4.5%; justify-content: center;
+    }
+    /* Slide 06 — lift logo so it breathes from the H1 */
+    .s-06 .mark { bottom: 4.5%; }
+    .s-06 .text-cell .ig-ey { color: var(--yellow); }
+    .s-06 .text-cell h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.92;
+      font-size: 7.5cqi; color: var(--white); margin: 0;
+    }
+    .s-06 .text-cell .step-chip {
+      align-self: flex-start;
+      font-family: var(--font-display); font-weight: 900;
+      background: var(--yellow); color: var(--black);
+      padding: 1.2cqi 2cqi;
+      font-size: 2.4cqi; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+
+    /* === SLIDE 07 — Quote / proof === */
+    .s-07 { padding: 8%; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .s-07::before {
+      content: '"';
+      position: absolute; top: -8%; left: 3%;
+      font-family: var(--font-display); font-weight: 900;
+      font-size: 70cqi; line-height: 0.6;
+      color: var(--yellow); opacity: 0.12;
+    }
+    .s-07 .q {
+      position: relative;
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.015em; line-height: 0.95;
+      font-size: 8cqi; color: var(--white);
+    }
+    .s-07 .q .hl { color: var(--yellow); }
+    .s-07 .by {
+      margin-top: 6%;
+      display: grid; grid-template-columns: 9cqi 1fr; gap: 3cqi; align-items: center;
+      position: relative;
+    }
+    .s-07 .by .av {
+      width: 9cqi; aspect-ratio: 1; border-radius: 50%;
+      overflow: hidden; background: var(--grey-dark);
+      border: 0.4cqi solid var(--yellow);
+    }
+    .s-07 .by image-slot { width: 100%; height: 100%; display: block; }
+    .s-07 .by .name {
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 2.6cqi; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--white);
+    }
+    .s-07 .by .role {
+      font-family: var(--font-body); font-weight: 400;
+      font-size: 2.2cqi; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--grey-mid); margin-top: 0.5cqi;
+    }
+
+    /* === SLIDE 08 — CTA === */
+    .s-08 { background: var(--yellow); color: var(--black); padding: 8%; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+    .s-08 .ig-ey { color: rgba(0,0,0,0.55); margin-bottom: 3%; }
+    .s-08 h {
+      font-family: var(--font-display); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 0.88;
+      font-size: 15cqi; color: var(--black); margin: 0;
+    }
+    .s-08 .cta-btn {
+      margin-top: 6%;
+      display: inline-flex; align-items: center; gap: 1.4cqi;
+      padding: 2.4cqi 3.2cqi;
+      background: var(--black); color: var(--yellow);
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 2.6cqi; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .s-08 .url {
+      margin-top: 4%;
+      font-family: var(--font-body); font-weight: 700;
+      font-size: 2.2cqi; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(0,0,0,0.55);
+    }
+
+    @media (max-width: 1000px) {
+      .viewer { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="head">
+      <div class="brand">
+        <img src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+        <span>Carousel · Instagram / YouTube Post</span>
+      </div>
+      <div class="controls">
+        <div class="seg" role="tablist">
+          <button class="is-active" id="seg-square" type="button">1080 × 1080 — Square</button>
+          <button id="seg-portrait" type="button">1080 × 1350 — Portrait</button>
+        </div>
+        <div class="meta"><span id="counter-text">01 / 08</span></div>
+      </div>
+    </header>
+
+    <section class="viewer">
+      <div class="stage">
+        <div class="stage__deck" id="deck">
+          <button class="stage__nav prev" id="prev" type="button" aria-label="Vorherige">‹</button>
+          <button class="stage__nav next" id="next" type="button" aria-label="Nächste">›</button>
+          <div class="stage__rail" id="rail">
+
+            <!-- 01 — HOOK -->
+            <div class="ig-slide s-01">
+              <span class="ig-ey">Online-Kurs · Hamburg</span>
+              <div class="s01-body">
+                <h>Dein 1. Set<br><span class="lt">in 4 Wochen.</span></h>
+                <div class="hero">
+                  <image-slot id="carousel-01-hero" placeholder="Teaser-Bild (DJ-Pult / Hand am Mixer / Crowd)" shape="rect"></image-slot>
+                </div>
+              </div>
+              <div class="swipe"><span>Swipe</span><span class="arrow">→</span></div>
+              <span class="num">01 / 08</span>
+            </div>
+
+            <!-- 02 — PROBLEM -->
+            <div class="ig-slide s-02">
+              <div class="accent-bar"></div>
+              <span class="ig-ey">Der Mythos</span>
+              <h><span class="strike">SYNC-BUTTON</span><br>ist genug.</h>
+              <img class="mark" src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+              <span class="num">02 / 08</span>
+            </div>
+
+            <!-- 03 — BIG NUMBER -->
+            <div class="ig-slide s-03 on-yellow">
+              <span class="ig-ey">Drei Schritte</span>
+              <span class="digit">3</span>
+              <h>Phasen zum<br>sauberen Mix.</h>
+              <span class="num">03 / 08</span>
+            </div>
+
+            <!-- 04 — STEP 1 with face -->
+            <div class="ig-slide s-04">
+              <div class="cell text-cell">
+                <span class="step">01</span>
+                <h>Phrasing<br>hören.</h>
+                <p>32-Bar-Zyklen sind keine Theorie — sie sind das Skelett jedes Tracks. Erkenn sie, bevor du den Fader anfasst.</p>
+              </div>
+              <div class="cell face-cell">
+                <image-slot id="carousel-04-face" placeholder="Dein Gesicht (am Pult / im Studio)" shape="rect"></image-slot>
+              </div>
+              <span class="num" style="color:rgba(255,255,255,0.5);">04 / 08</span>
+            </div>
+
+            <!-- 05 — Bullet checklist -->
+            <div class="ig-slide s-05 on-white">
+              <span class="ig-ey">Step 02 · Beats zählen</span>
+              <h>Das Skelett<br>des Tracks.</h>
+              <ul>
+                <li><span>4 Beats</span><span>= 1 Bar</span></li>
+                <li><span>8 Bars</span><span>= 1 Section</span></li>
+                <li><span>32 Bars</span><span>= 1 Phrase</span></li>
+                <li><span>Phrase</span><span>= dein Mix-Punkt</span></li>
+              </ul>
+              <img class="mark" src="../../assets/logos/dein-dj-coach-blk.png" alt="">
+              <span class="num">05 / 08</span>
+            </div>
+
+            <!-- 06 — Image + step -->
+            <div class="ig-slide s-06">
+              <div class="topic">
+                <image-slot id="carousel-06-topic" placeholder="CDJ / Cue-Point / Software-Screenshot" shape="rect"></image-slot>
+              </div>
+              <div class="text-cell">
+                <span class="step-chip">Step 03</span>
+                <h>Cue auf<br>der 1.</h>
+              </div>
+              <img class="mark" src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+              <span class="num" style="color: var(--yellow); bottom: 4%;">06 / 08</span>
+            </div>
+
+            <!-- 07 — Quote / proof -->
+            <div class="ig-slide s-07">
+              <p class="q">Nach 4 Wochen<br>mein <span class="hl">erster Gig</span><br>in der Roten Flora.</p>
+              <div class="by">
+                <div class="av">
+                  <image-slot id="carousel-07-face" placeholder="Schüler-Portrait" shape="circle"></image-slot>
+                </div>
+                <div>
+                  <div class="name">Lukas M.</div>
+                  <div class="role">Online-Kurs 2025</div>
+                </div>
+              </div>
+              <img class="mark" src="../../assets/logos/dein-dj-coach-wht.png" alt="">
+              <span class="num">07 / 08</span>
+            </div>
+
+            <!-- 08 — CTA -->
+            <div class="ig-slide s-08">
+              <span class="ig-ey">Jetzt starten</span>
+              <h>Leg<br>auf.</h>
+              <span class="cta-btn">Link in Bio →</span>
+              <span class="url">deindjcoach.de / kurs</span>
+              <img class="mark" src="../../assets/logos/dein-dj-coach-blk.png" alt="">
+              <span class="num">08 / 08</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="stage__dots" id="dots"></div>
+      </div>
+
+      <aside class="strip">
+        <div class="strip__head">Sequenz · 8 Slides</div>
+        <button class="strip__item is-active" data-i="0"><div class="strip__thumb"><span style="background:#FFD600;display:block;width:100%;height:100%"></span></div><div><div class="strip__num">01</div><div class="strip__label">Hook</div><div class="strip__type">Headline · Yellow</div></div></button>
+        <button class="strip__item" data-i="1"><div class="strip__thumb"><span style="background:#0A0A0A;display:block;width:100%;height:100%;border-left:3px solid #FFD600"></span></div><div><div class="strip__num">02</div><div class="strip__label">Problem</div><div class="strip__type">Strikethrough · Dark</div></div></button>
+        <button class="strip__item" data-i="2"><div class="strip__thumb"><span style="background:#FFD600;display:flex;align-items:center;justify-content:center;color:#0A0A0A;font-family:var(--font-display);font-weight:900;font-size:36px;width:100%;height:100%">3</span></div><div><div class="strip__num">03</div><div class="strip__label">Big Number</div><div class="strip__type">Tease · Yellow</div></div></button>
+        <button class="strip__item" data-i="3"><div class="strip__thumb"><span style="background:linear-gradient(to right,#0A0A0A 50%, #444 50%);display:block;width:100%;height:100%"></span></div><div><div class="strip__num">04</div><div class="strip__label">Step 01 · Face</div><div class="strip__type">Split · Dark</div></div></button>
+        <button class="strip__item" data-i="4"><div class="strip__thumb"><span style="background:#FFF;display:block;width:100%;height:100%"></span></div><div><div class="strip__num">05</div><div class="strip__label">Step 02 · List</div><div class="strip__type">Bullets · White</div></div></button>
+        <button class="strip__item" data-i="5"><div class="strip__thumb"><span style="background:linear-gradient(#444 60%,#0A0A0A 60%);display:block;width:100%;height:100%"></span></div><div><div class="strip__num">06</div><div class="strip__label">Step 03 · Image</div><div class="strip__type">Topic + Text</div></div></button>
+        <button class="strip__item" data-i="6"><div class="strip__thumb"><span style="background:#0A0A0A;display:block;width:100%;height:100%"></span></div><div><div class="strip__num">07</div><div class="strip__label">Proof / Quote</div><div class="strip__type">Testimonial · Dark</div></div></button>
+        <button class="strip__item" data-i="7"><div class="strip__thumb"><span style="background:#FFD600;display:block;width:100%;height:100%"></span></div><div><div class="strip__num">08</div><div class="strip__label">CTA</div><div class="strip__type">Link in Bio · Yellow</div></div></button>
+      </aside>
+    </section>
+  </div>
+
+  <script src="../../slides/image-slot.js"></script>
+  <script>
+    (function () {
+      const rail = document.getElementById('rail');
+      const dotsEl = document.getElementById('dots');
+      const prev = document.getElementById('prev');
+      const next = document.getElementById('next');
+      const counter = document.getElementById('counter-text');
+      const items = [...document.querySelectorAll('.strip__item')];
+      const total = items.length;
+      let i = 0;
+
+      // build dots
+      for (let k = 0; k < total; k++) {
+        const b = document.createElement('button');
+        b.className = 'stage__dot' + (k === 0 ? ' is-current' : '');
+        b.type = 'button';
+        b.dataset.i = String(k);
+        b.addEventListener('click', () => go(k));
+        dotsEl.appendChild(b);
+      }
+      const dots = [...dotsEl.children];
+
+      function go(n) {
+        i = Math.max(0, Math.min(total - 1, n));
+        rail.style.transform = 'translateX(-' + (i * 100) + '%)';
+        items.forEach((el, k) => el.classList.toggle('is-active', k === i));
+        dots.forEach((el, k) => el.classList.toggle('is-current', k === i));
+        counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+        prev.disabled = i === 0;
+        next.disabled = i === total - 1;
+      }
+
+      prev.addEventListener('click', () => go(i - 1));
+      next.addEventListener('click', () => go(i + 1));
+      items.forEach((el) => el.addEventListener('click', () => go(Number(el.dataset.i))));
+
+      // keyboard
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft')  go(i - 1);
+        if (e.key === 'ArrowRight') go(i + 1);
+      });
+
+      // === Square / Portrait toggle ===
+      const segSq = document.getElementById('seg-square');
+      const segPt = document.getElementById('seg-portrait');
+      function setFormat(portrait) {
+        const slides = document.querySelectorAll('.ig-slide');
+        slides.forEach((s) => { s.style.aspectRatio = portrait ? '4 / 5' : '1 / 1'; });
+        const deck = document.getElementById('deck');
+        deck.style.aspectRatio = portrait ? '4 / 5' : '1 / 1';
+        segSq.classList.toggle('is-active', !portrait);
+        segPt.classList.toggle('is-active', portrait);
+      }
+      segSq.addEventListener('click', () => setFormat(false));
+      segPt.addEventListener('click', () => setFormat(true));
+
+      go(0);
+    })();
+  </script>
+</body>
+</html>
